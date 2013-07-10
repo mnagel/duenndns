@@ -42,7 +42,7 @@ parser.add_option("--client",
 parser.add_option("--ip",
                     dest    = "ip",
                     action  = "store",
-                    help    = "ip.",
+                    help    = "ip. skip this option to trigger autodiscovery.",
                     default = None
 )
 
@@ -95,7 +95,20 @@ if options.client is None:
 	fatal_error('client is None')
 
 if options.ip is None:
-	fatal_error('ip is None')
+    print('ip is None, starting autodiscovery')
+    try:
+        import re
+        import urllib
+
+        url = "http://icanhazip.com/"
+        ip = urllib.urlopen(url).read()
+
+        matchObj = re.match( r'([0-9]{1,3}.[0-9]{1,3}.[0-9]{1,3}.[0-9]{1,3})', ip)
+        if matchObj:
+            options.ip = matchObj.group()
+            print("autodiscovery found %s" % (options.ip))
+    except Exception as e:
+        fatal_error('autodiscovery failed', exception=e)
 
 if options.ttl is None:
 	fatal_error('ttl is None')
