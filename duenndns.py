@@ -53,6 +53,13 @@ parser.add_option("--ttl",
                     default = "60"
 )
 
+parser.add_option("--check",
+                    dest    = "check",
+                    action  = "store_true",
+                    help    = "check only via dig, do not update.",
+                    default = False
+)
+
 # parse the args
 (options, args) = parser.parse_args()
 
@@ -136,11 +143,15 @@ quit
 	'ttl'			: options.ttl
 }
 
-out, rc = shell(command, stdin=script)
+if not options.check:
+    out, rc = shell(command, stdin=script)
 
-print(out)
+    print(out)
+    print("status was %s" % rc)
 
-print("status was %s" % rc)
+"""
+CHECK IF THE UPDATE WAS SUCCESSUL
+"""
 
 control = [
 	'dig',
