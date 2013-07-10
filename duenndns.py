@@ -119,9 +119,6 @@ command = [
 	options.key
 ]
 
-# command = ["cat"]
-
-
 script = """
 answer
 server %(nameserver)s
