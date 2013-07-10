@@ -9,6 +9,9 @@ Make the script executable and drop it somewhere in your `$PATH`.
 You need to have a nameserver somewhere that accepts updates via `nsupdate`
 and you will need the respective private key.
 
+For information how to configure BIND in a compatible way,
+see e.g. http://andrwe.org/linux/own-ddns.
+
 ## Usage
 
 Usage: duenndns.py [options]
@@ -22,6 +25,25 @@ python duenndns.py \
   --zone dyn.example.com \
   --client funny-hostname \
   --ip 127.0.0.1
+```
+
+You can enable IP autodiscovery by skipping the `--ip` option like so:
+
+```
+python duenndns.py \
+  --key Kxxx.tsigkey.+111+11111.private \
+  --nameserver ns0.example.com \
+  --zone dyn.example.com \
+  --client funny-hostname
+```
+  
+Expected output:
+
+```
+[...]
+ip is None, starting autodiscovery
+autodiscovery found 8.8.8.8
+[...]
 ```
 
 ## Options
@@ -38,8 +60,9 @@ Options:
                         nameserver.
   --zone=ZONE           zone.
   --client=CLIENT       client.
-  --ip=IP               ip.
+  --ip=IP               ip. skip this option to trigger autodiscovery.
   --ttl=TTL             ttl.
+  --check               check only via dig, do not update.
 ```
 
 ## Contact
@@ -54,7 +77,7 @@ inspired by and a lot of initial help from: Philipp Kern
 
 Files:
 
-* `*.*`
+* `*`
 
 Copyright:
 
