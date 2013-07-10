@@ -78,7 +78,7 @@ def shell(cmd, stdin="", checkexe=True):
         out = "%s%s" % (stdout, stderr)
         rc = p.returncode
     except Exception as e:
-    	fatal_error("shell was unhappy", exception=e)
+        fatal_error("shell was unhappy", exception=e)
         out = "shell was unhappy: %s" % (cmdstring)
         rc = "exception"
     return(out, rc)
@@ -90,16 +90,16 @@ def fatal_error(text, exit_status=-1, exception=None):
     exit(exit_status)
 
 if options.key is None:
-	fatal_error('key is None')
+    fatal_error('key is None')
 
 if options.nameserver is None:
-	fatal_error('nameserver is None')
+    fatal_error('nameserver is None')
 
 if options.zone is None:
-	fatal_error('zone is None')
+    fatal_error('zone is None')
 
 if options.client is None:
-	fatal_error('client is None')
+    fatal_error('client is None')
 
 if options.ip is None:
     print('ip is None, starting autodiscovery')
@@ -118,12 +118,12 @@ if options.ip is None:
         fatal_error('autodiscovery failed', exception=e)
 
 if options.ttl is None:
-	fatal_error('ttl is None')
+    fatal_error('ttl is None')
 
 command = [
-	"nsupdate",
-	"-k",
-	options.key
+    "nsupdate",
+    "-k",
+    options.key
 ]
 
 script = """
@@ -134,13 +134,13 @@ ttl %(ttl)s
 update delete %(client)s.%(zone)s. A
 update add %(client)s.%(zone)s. A %(ip)s
 send
-quit	
+quit
 """ % {
-	'nameserver'	: options.nameserver,
-	'zone'			: options.zone,
-	'client'		: options.client,
-	'ip'			: options.ip,
-	'ttl'			: options.ttl
+    'nameserver'    : options.nameserver,
+    'zone'          : options.zone,
+    'client'        : options.client,
+    'ip'            : options.ip,
+    'ttl'           : options.ttl
 }
 
 if not options.check:
@@ -154,12 +154,12 @@ CHECK IF THE UPDATE WAS SUCCESSUL
 """
 
 control = [
-	'dig',
-	'%(client)s.%(zone)s' % {
-		'client'	: options.client,
-		'zone'		: options.zone
-	},
-	'A'
+    'dig',
+    '%(client)s.%(zone)s' % {
+        'client'    : options.client,
+        'zone'      : options.zone
+    },
+    'A'
 ]
 
 out, rc = shell(control)
