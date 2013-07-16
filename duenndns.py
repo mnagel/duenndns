@@ -63,6 +63,13 @@ parser.add_option("--check",
                     default = False
 )
 
+parser.add_option("--verbose",
+                    dest    = "verbose",
+                    action  = "store_true",
+                    help    = "be verbose.",
+                    default = False
+)
+
 # parse the args
 (options, args) = parser.parse_args()
 
