@@ -4,7 +4,11 @@
 from __future__ import print_function
 
 from optparse import OptionParser
+import re
+import socket
 import subprocess
+import time
+import urllib
 
 parser = OptionParser(description="""
 this is the duenndns tool to update dynamic dns records
@@ -91,9 +95,6 @@ def fatal_error(text, exit_status=-1, exception=None):
 
 def get_external_ip():
     try:
-        import re
-        import urllib
-
         url = "http://icanhazip.com/"
         ip = urllib.urlopen(url).read()
 
@@ -155,9 +156,6 @@ if not options.check:
 """
 CHECK IF THE UPDATE WAS SUCCESSUL
 """
-
-import socket
-import time
 
 # http://stackoverflow.com/a/5849861/2536029
 class Timer(object):
