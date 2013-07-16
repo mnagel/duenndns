@@ -3,13 +3,12 @@
 
 from __future__ import print_function
 
-
 from optparse import OptionParser
 import subprocess
 
 parser = OptionParser(description="""
 this is the duenndns tool to update dynamic dns records
-""".strip())
+""")
 
 parser.add_option("--key",
                     dest    = "key",
