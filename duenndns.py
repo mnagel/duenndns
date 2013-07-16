@@ -168,9 +168,10 @@ class Timer(object):
         self.tstart = time.time()
 
     def __exit__(self, type, value, traceback):
-        if self.name:
-            print('[%s]' % self.name)
-        print('Elapsed: %s' % (time.time() - self.tstart))
+        print('[%s]: %s' % (
+            self.name if self.name else '',
+            time.time() - self.tstart)
+        )
 
 with Timer("wait for dns"):
     done = False
