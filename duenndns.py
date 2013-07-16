@@ -7,6 +7,7 @@ from optparse import OptionParser
 import re
 import socket
 import subprocess
+import sys
 import time
 import urllib
 
@@ -160,7 +161,19 @@ quit
 }
 
 if not options.check:
-    out, rc = shell(command, stdin=script)
+    ip = socket.gethostbyname( '%(client)s.%(zone)s' % {
+            'client'    : options.client,
+            'zone'      : options.zone
+        }
+    )
+
+    log("ip is %s" % (ip))
+
+    if options.ip == ip:
+        log("doing nothing")
+        sys.exit(0)
+    else:
+        out, rc = shell(command, stdin=script)
 
         if out:
             log(out)
