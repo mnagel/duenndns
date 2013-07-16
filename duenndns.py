@@ -105,7 +105,6 @@ def fatal_error(text, exit_status=-1, exception=None):
     log('fatal error: %s' % (text))
     exit(exit_status)
 
-
 def get_external_ip():
     try:
         url = "http://icanhazip.com/"
