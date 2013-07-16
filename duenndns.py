@@ -71,6 +71,13 @@ parser.add_option("--verbose",
                     default = False
 )
 
+parser.add_option("--cron",
+                    dest    = "cron",
+                    action  = "store_true",
+                    help    = "run in cron mode (no output unless error).",
+                    default = False
+)
+
 # parse the args
 (options, args) = parser.parse_args()
 
@@ -96,7 +103,7 @@ def shell(cmd, stdin="", checkexe=True):
 
 def log(string, level=0):
     # level is the verbosity-level needed to display this message
-    if level == 0 or options.verbose:
+    if (not options.cron) and (level == 0 or options.verbose):
         print(string)
 
 def fatal_error(text, exit_status=-1, exception=None):
