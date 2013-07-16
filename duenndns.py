@@ -67,7 +67,7 @@ def shell(cmd, stdin="", checkexe=True):
         try:
             subprocess.check_output(['which', cmd[0]])
         except subprocess.CalledProcessError:
-            fatalError('%s missing, not executable or not in PATH.' % cmd[0])
+            fatal_error('%s missing, not executable or not in PATH.' % cmd[0])
 
     cmdstring = " ".join(cmd)
     print("running: %s\ninput:%s" % (cmdstring, stdin))
