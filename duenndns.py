@@ -174,6 +174,10 @@ class Timer(object):
 
 with Timer("wait for dns"):
     done = False
+    frequency = 10
+    maxloops = 12
+    numloops = 0
+    
     while not done:
         ip = socket.gethostbyname( '%(client)s.%(zone)s' % {
                 'client'    : options.client,
@@ -186,5 +190,10 @@ with Timer("wait for dns"):
         if ip == options.ip:
             done = True
         else:
-            print("still trying")
-            time.sleep(2)
+            numloops += 1
+            if numloops > maxloops:
+                done = True
+                print("giving up")
+            else:
+                print("still trying")
+                time.sleep(frequency)
