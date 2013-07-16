@@ -155,18 +155,32 @@ CHECK IF THE UPDATE WAS SUCCESSUL
 import socket
 import time
 
-done = False
-while not done:
-    ip = socket.gethostbyname( '%(client)s.%(zone)s' % {
-            'client'    : options.client,
-            'zone'      : options.zone
-        }
-    )
+# http://stackoverflow.com/a/5849861/2536029
+class Timer(object):
+    def __init__(self, name=None):
+        self.name = name
 
-    print("dns now tells: %s" % (ip))
+    def __enter__(self):
+        self.tstart = time.time()
 
-    if ip == options.ip:
-        done = True
-    else:
-        print("still trying")
-        time.sleep(2)
+    def __exit__(self, type, value, traceback):
+        if self.name:
+            print('[%s]' % self.name)
+        print('Elapsed: %s' % (time.time() - self.tstart))
+
+with Timer("wait for dns"):
+    done = False
+    while not done:
+        ip = socket.gethostbyname( '%(client)s.%(zone)s' % {
+                'client'    : options.client,
+                'zone'      : options.zone
+            }
+        )
+
+        print("dns now tells: %s" % (ip))
+
+        if ip == options.ip:
+            done = True
+        else:
+            print("still trying")
+            time.sleep(2)
