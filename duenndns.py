@@ -13,7 +13,7 @@ import urllib
 
 parser = OptionParser(description="""
 this is the duenndns tool to update dynamic dns records
-""")
+""".strip())
 
 parser.add_option("--key",
                     dest    = "key",
