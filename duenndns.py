@@ -103,13 +103,13 @@ def shell(cmd, stdin="", checkexe=True):
 
 def log(string, level=0):
     # level is the verbosity-level needed to display this message
-    if (not options.cron) and (level == 0 or options.verbose):
+    if options.verbose or (level <= 0 and not options.cron) or (level <= -1):
         print(string)
 
 def fatal_error(text, exit_status=-1, exception=None):
     if exception is not None:
         log(repr(exception))
-    log('fatal error: %s' % (text))
+    log('fatal error: %s' % (text), level=-1)
     exit(exit_status)
 
 def get_external_ip():
@@ -224,7 +224,7 @@ with Timer("wait for dns"):
             numloops += 1
             if numloops > maxloops:
                 done = True
-                log("giving up")
+                fatal_error("giving up, ip is %s but we want %s" % (ip, options.ip))
             else:
                 log("still trying", level=1)
                 time.sleep(frequency)
