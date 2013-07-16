@@ -88,6 +88,21 @@ def fatal_error(text, exit_status=-1, exception=None):
     print('fatal error: %s' % (text))
     exit(exit_status)
 
+
+def get_external_ip():
+    try:
+        import re
+        import urllib
+
+        url = "http://icanhazip.com/"
+        ip = urllib.urlopen(url).read()
+
+        matchObj = re.match( r'([0-9]{1,3}.[0-9]{1,3}.[0-9]{1,3}.[0-9]{1,3})', ip)
+        if matchObj:
+            return matchObj.group()
+    except Exception as e:
+        fatal_error('autodiscovery failed', exception=e)
+
 if options.key is None:
     fatal_error('key is None')
 
@@ -102,19 +117,8 @@ if options.client is None:
 
 if options.ip is None:
     print('ip is None, starting autodiscovery')
-    try:
-        import re
-        import urllib
-
-        url = "http://icanhazip.com/"
-        ip = urllib.urlopen(url).read()
-
-        matchObj = re.match( r'([0-9]{1,3}.[0-9]{1,3}.[0-9]{1,3}.[0-9]{1,3})', ip)
-        if matchObj:
-            options.ip = matchObj.group()
-            print("autodiscovery found %s" % (options.ip))
-    except Exception as e:
-        fatal_error('autodiscovery failed', exception=e)
+    options.ip = get_external_ip()
+    print("autodiscovery found %s" % (options.ip))
 
 if options.ttl is None:
     fatal_error('ttl is None')
