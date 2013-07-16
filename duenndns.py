@@ -152,15 +152,21 @@ if not options.check:
 CHECK IF THE UPDATE WAS SUCCESSUL
 """
 
-control = [
-    'dig',
-    '%(client)s.%(zone)s' % {
-        'client'    : options.client,
-        'zone'      : options.zone
-    },
-    'A'
-]
+import socket
+import time
 
-out, rc = shell(control)
+done = False
+while not done:
+    ip = socket.gethostbyname( '%(client)s.%(zone)s' % {
+            'client'    : options.client,
+            'zone'      : options.zone
+        }
+    )
 
-print(out)
+    print("dns now tells: %s" % (ip))
+
+    if ip == options.ip:
+        done = True
+    else:
+        print("still trying")
+        time.sleep(2)
