@@ -40,10 +40,18 @@ python duenndns.py \
 Expected output:
 
 ```
-[...]
 ip is None, starting autodiscovery
 autodiscovery found 8.8.8.8
-[...]
+ip is 127.0.0.1
+nsupdate status was 0
+dns now tells: 127.0.0.1
+dns now tells: 127.0.0.1
+dns now tells: 127.0.0.1
+dns now tells: 127.0.0.1
+dns now tells: 127.0.0.1
+dns now tells: 127.0.0.1
+dns now tells: 8.8.8.8
+[wait for dns]: 60.1536579132
 ```
 
 ## Options
@@ -63,6 +71,8 @@ Options:
   --ip=IP               ip. skip this option to trigger autodiscovery.
   --ttl=TTL             ttl.
   --check               check only via dig, do not update.
+  --verbose             be verbose.
+  --cron                run in cron mode (no output unless error).
 ```
 
 ## Contact
