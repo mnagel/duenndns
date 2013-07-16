@@ -81,7 +81,7 @@ def shell(cmd, stdin="", checkexe=True):
             fatal_error('%s missing, not executable or not in PATH.' % cmd[0])
 
     cmdstring = " ".join(cmd)
-    print("running: %s\ninput:%s" % (cmdstring, stdin))
+    log("running: %s\ninput:%s" % (cmdstring, stdin), level=1)
     try:
         p = subprocess.Popen(cmd, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         stdout, stderr = p.communicate(input=stdin)
@@ -93,10 +93,15 @@ def shell(cmd, stdin="", checkexe=True):
         rc = "exception"
     return(out, rc)
 
+def log(string, level=0):
+    # level is the verbosity-level needed to display this message
+    if level == 0 or options.verbose:
+        print(string)
+
 def fatal_error(text, exit_status=-1, exception=None):
     if exception is not None:
-        print(repr(exception))
-    print('fatal error: %s' % (text))
+        log(repr(exception))
+    log('fatal error: %s' % (text))
     exit(exit_status)
 
 
@@ -124,9 +129,9 @@ if options.client is None:
     fatal_error('client is None')
 
 if options.ip is None:
-    print('ip is None, starting autodiscovery')
+    log('ip is None, starting autodiscovery')
     options.ip = get_external_ip()
-    print("autodiscovery found %s" % (options.ip))
+    log("autodiscovery found %s" % (options.ip))
 
 if options.ttl is None:
     fatal_error('ttl is None')
@@ -157,8 +162,9 @@ quit
 if not options.check:
     out, rc = shell(command, stdin=script)
 
-    print(out)
-    print("status was %s" % rc)
+        if out:
+            log(out)
+        log("nsupdate status was %s" % rc)
 
 """
 CHECK IF THE UPDATE WAS SUCCESSUL
@@ -173,7 +179,7 @@ class Timer(object):
         self.tstart = time.time()
 
     def __exit__(self, type, value, traceback):
-        print('[%s]: %s' % (
+        log('[%s]: %s' % (
             self.name if self.name else '',
             time.time() - self.tstart)
         )
@@ -191,7 +197,7 @@ with Timer("wait for dns"):
             }
         )
 
-        print("dns now tells: %s" % (ip))
+        log("dns now tells: %s" % (ip))
 
         if ip == options.ip:
             done = True
@@ -199,7 +205,7 @@ with Timer("wait for dns"):
             numloops += 1
             if numloops > maxloops:
                 done = True
-                print("giving up")
+                log("giving up")
             else:
-                print("still trying")
+                log("still trying", level=1)
                 time.sleep(frequency)
