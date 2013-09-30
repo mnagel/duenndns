@@ -184,7 +184,8 @@ if not options.check:
         }
     )
 
-    log("ip is %s" % (ip))
+    if status:
+        log("original ip is %s" % (ip))
 
     if options.ip == ip:
         log("doing nothing")
@@ -229,7 +230,8 @@ with Timer("wait for dns"):
             }
         )
 
-        log("dns now tells: %s" % (ip))
+        if status:
+            log("dns now tells: %s" % (ip))
 
         if ip == options.ip:
             done = True
