@@ -4,6 +4,7 @@
 from __future__ import print_function
 
 from optparse import OptionParser
+import os
 import re
 import socket
 import subprocess
@@ -125,6 +126,9 @@ def get_external_ip():
 
 if options.key is None:
     fatal_error('key is None')
+
+if not os.path.exists(options.key):
+    fatal_error('keyfile does not exist')
 
 if options.nameserver is None:
     fatal_error('nameserver is None')
