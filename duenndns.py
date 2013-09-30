@@ -51,6 +51,13 @@ parser.add_option("--ip",
                     default = None
 )
 
+parser.add_option("--ip-from-file",
+                    dest    = "ip_filename",
+                    action  = "store",
+                    help    = "filename to read ip from. skip this option to trigger autodiscovery.",
+                    default = None
+)
+
 parser.add_option("--ttl",
                     dest    = "ttl",
                     action  = "store",
@@ -131,6 +138,10 @@ def dns_resolve_name(name):
         log("ip could not be determined")
         return False, None
 
+def file_get_contents(filename):
+    with open(filename) as f:
+        return f.read()
+
 if options.key is None:
     fatal_error('key is None')
 
@@ -146,7 +157,14 @@ if options.zone is None:
 if options.client is None:
     fatal_error('client is None')
 
-if options.ip is None:
+if options.ip_filename is not None:
+    if options.ip is not None:
+        fatal_error('dont set ip and ip_filename')
+    log('reading ip from file %s' % options.ip_filename)
+    options.ip = file_get_contents(options.ip_filename).strip()
+    log('ip to use is %s' % options.ip)
+
+if options.ip is None and options.ip_filename is None:
     log('ip is None, starting autodiscovery')
     options.ip = get_external_ip()
     log("autodiscovery found %s" % (options.ip))
