@@ -194,7 +194,9 @@ if not options.check:
 
         if out:
             log(out)
-        log("nsupdate status was %s" % rc)
+        if rc != 0:
+            fatal_error('nsupdate failed with exit code %s' % rc)
+        log('nsupdate successful')
 
 """
 CHECK IF THE UPDATE WAS SUCCESSUL
