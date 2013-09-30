@@ -124,6 +124,13 @@ def get_external_ip():
     except Exception as e:
         fatal_error('autodiscovery failed', exception=e)
 
+def dns_resolve_name(name):
+    try:
+        return True, socket.gethostbyname(name)
+    except:
+        log("ip could not be determined")
+        return False, None
+
 if options.key is None:
     fatal_error('key is None')
 
@@ -171,7 +178,7 @@ quit
 }
 
 if not options.check:
-    ip = socket.gethostbyname( '%(client)s.%(zone)s' % {
+    status, ip = dns_resolve_name( '%(client)s.%(zone)s' % {
             'client'    : options.client,
             'zone'      : options.zone
         }
@@ -214,7 +221,7 @@ with Timer("wait for dns"):
     numloops = 0
     
     while not done:
-        ip = socket.gethostbyname( '%(client)s.%(zone)s' % {
+        status, ip = dns_resolve_name( '%(client)s.%(zone)s' % {
                 'client'    : options.client,
                 'zone'      : options.zone
             }
