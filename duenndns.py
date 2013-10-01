@@ -92,7 +92,8 @@ parser.add_option("--cron",
 def shell(cmd, stdin="", checkexe=True):
     if checkexe:
         try:
-            subprocess.check_output(['which', cmd[0]])
+            # subprocess.check_output(['which', cmd[0]])
+            pass
         except subprocess.CalledProcessError:
             fatal_error('%s missing, not executable or not in PATH.' % cmd[0])
 
