@@ -123,7 +123,7 @@ def fatal_error(text, exit_status=-1, exception=None):
 
 def get_external_ip():
     try:
-        url = "http://icanhazip.com/"
+        url = "http://ipv4.icanhazip.com/"
         ip = urllib.urlopen(url).read()
 
         matchObj = re.match( r'([0-9]{1,3}.[0-9]{1,3}.[0-9]{1,3}.[0-9]{1,3})', ip)
@@ -241,7 +241,7 @@ with Timer("wait for dns"):
     frequency = 10
     maxloops = 12
     numloops = 0
-    
+
     while not done:
         status, ip = dns_resolve_name( '%(client)s.%(zone)s' % {
                 'client'    : options.client,
